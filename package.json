@@ -1,29 +1,17 @@
 {
   "name": "agent_les",
   "version": "1.0.0",
-  "description": "A fun Node.js + Express project for building LLM-based agents using Groq and GitHub Codespaces.",
-  "main": "index.js",
+  "description": "Simple chat interface with Express",
+  "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon backend/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeremiahmarble/Agent_LES.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jeremiahmarble/Agent_LES/issues"
-  },
-  "homepage": "https://github.com/jeremiahmarble/Agent_LES#readme",
   "dependencies": {
     "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

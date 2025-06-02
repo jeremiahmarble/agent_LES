@@ -4,13 +4,13 @@ const fs = require('fs');
 // Check if .env file exists
 const envPath = path.resolve(process.cwd(), '.env');
 console.log('Checking .env file at:', envPath);
-console.log('File exists:', fs.existsSync(envPath));
+console.log('The .env file exists:', fs.existsSync(envPath));
 
 // Try to read .env file contents (safely)
 try {
   const envContents = fs.readFileSync(envPath, 'utf8');
   console.log('Number of lines in .env:', envContents.split('\n').length);
-  console.log('First few characters of .env:', envContents.substring(0, 20) + '...');
+  //console.log('First few characters of .env:', envContents.substring(0, 20) + '...');
 } catch (err) {
   console.error('Error reading .env file:', err.message);
 }
@@ -24,8 +24,7 @@ console.log('Environment variables:', {
   llmService: process.env.LLM_SERVICE,
   hasServiceKey: !!process.env.LLM_SERVICE_KEY,
   model: process.env.MODEL,
-  port: process.env.PORT,
-  nodeEnv: process.env.NODE_ENV
+  port: process.env.PORT
 });
 
 const config = {
