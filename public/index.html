@@ -95,9 +95,18 @@
             try {
                 const res = await fetch('/api/info');
                 const info = await res.json();
-                addMessage(`Welcome! I'm Agent LES. You are using the ${info.service} service with the ${info.model} model. Enter your prompt below and let's get started.`, false);
+                const promptText = `Hi! I'm Agent LES.  You're using **${info.service}** with **${info.model}**`;
+
+                // Pass welcome message through the formatter endpoint
+                const formatRes = await fetch('/api/format', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: promptText })
+                });
+                const formatData = await formatRes.json();
+                addMessage(formatData.html, false, true);
             } catch (e) {
-                addMessage("Welcome! I'm Agent LES. (Could not load service/model info.) Enter your prompt below and let's get started.", false);
+                addMessage("Welcome! I'm Agent LES. I couldn't load the service/model info. It's me.  I'm the problem, it's me.", false);
             }
         };
 
