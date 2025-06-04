@@ -1,3 +1,3 @@
 # Agent_LES
 
-A fun Node.js + Express project for building (and breaking) LM-based AI systems (& agents).
+A fun & janky Node.js + Express project for teaching folks the concepts behind building (and breaking) LM-based AI systems (& agents).
