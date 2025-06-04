@@ -1,5 +1,10 @@
 const axios = require('axios');
 const config = require('../config');
+const fs = require('fs');
+const path = require('path');
+
+// Load system prompt
+const systemPrompt = fs.readFileSync(path.join(__dirname, '../../prompts/system_prompt.txt'), 'utf8').trim();
 
 // LLM Service endpoints and configurations
 const LLM_SERVICES = {
@@ -49,7 +54,10 @@ async function askLLM(prompt) {
       serviceConfig.baseUrl,
       {
         model: model,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt }
+        ],
       },
       {
         headers: {
