@@ -4,6 +4,7 @@ A fun & janky Node.js + Express project for teaching folks the concepts behind b
 
 We often use agent LES within one of our workshops.  If so, you should be able to fire up Github Codespaces from within our Classroom - we'll send you a link.  
 
+# "This is our agent; we make the call"
 In this workshop, you’ll:
 - Learn what AI agents are and how they work
 - Explore the structure of a simple Node.js agent backend
@@ -12,7 +13,7 @@ In this workshop, you’ll:
 
 ---
 
-Regardless of how you find it, pls use this as your personal copy of the **Agent LES** project — you’ll build and test your own local AI agent in this repo - likely either locally or else using GitHub Codespaces.
+Regardless of how you find **Agent LES**, pls use this as your personal copy of the project — you’ll build and test your own local AI agent in this repo - likely either locally or else using GitHub Codespaces.
 
 ---
 
