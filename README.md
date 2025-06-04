@@ -1,3 +1,3 @@
-# LES_agent
+# Agent_LESA
 
-A fun Node.js + Express project for building LLM-based agents using Groq and GitHub Codespaces.
+A fun Node.js + Express project for building (and breaking) LM-based AI systems (& agents).
