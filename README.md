@@ -1,7 +1,8 @@
-# Agent LES
-# This is our agent, we make the call
+# Agent_LES
 
-Welcome! This is your starting point for building a basic LLM-powered agent using Node.js and Express.
+A fun & janky Node.js + Express project for teaching folks the concepts behind building (and breaking) LM-based AI systems (& agents).
+
+We often use agent LES within one of our workshops.  If so, you should be able to fire up Github Codespaces from within our Classroom - we'll send you a link.  
 
 In this workshop, you’ll:
 - Learn what AI agents are and how they work
@@ -11,13 +12,13 @@ In this workshop, you’ll:
 
 ---
 
-This is your personal copy of the **Agent LES** project — you’ll build and test your own local AI agent in this repo using GitHub Codespaces.
+Regardless of how you find it, pls use this as your personal copy of the **Agent LES** project — you’ll build and test your own local AI agent in this repo - likely either locally or else using GitHub Codespaces.
 
 ---
 
 ## ✅ Setup Instructions
 
-1. **Accept the assignment link** (provided by instructor)
+1. **Accept the assignment link** (we'll provide this, if it's applicable)
 2. Once your repo is created, open it in a Codespace:
    - Click the green **Code** button
    - Select **“Codespaces” → “Create codespace on main”**
@@ -34,7 +35,7 @@ This is your personal copy of the **Agent LES** project — you’ll build and t
 npm install
 npm run dev
 
-The server will run on localhost:3000 — GitHub will provide a preview link.
+The server will run on localhost:8000 — GitHub will provide a preview link.
 
 
 5. Click the **“Ports”** tab in Codespaces (bottom panel) and open port **3000** in the browser
@@ -74,3 +75,4 @@ If something breaks:
 * Restart the server: `Ctrl+C` and then `npm start` again
 
 <3 Jeremiah & Dona
+=======>>>>>>> 9df7eb47f84ddd14939743dd1bfe10c85ca1f9a5
