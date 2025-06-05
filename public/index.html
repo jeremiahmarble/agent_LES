@@ -95,7 +95,7 @@
             try {
                 const res = await fetch('/api/info');
                 const info = await res.json();
-                const promptText = `Hi! I'm Agent LES.  You're using **${info.service}** with **${info.model}**`;
+                const promptText = `Hi! I'm Agent LES.\nYou're using **${info.service}** with **${info.model}**.\nTo switch model, type the word CHANGE`;
 
                 // Pass welcome message through the formatter endpoint
                 const formatRes = await fetch('/api/format', {
@@ -118,7 +118,78 @@
                 addMessage(message, true);
                 input.value = '';
                 
-                // Call backend LLM instead of simulating a response
+                // Check if message starts with "CHANGE"
+                if (message.toUpperCase().startsWith('CHANGE')) {
+                    try {
+                        const res = await fetch('/api/info');
+                        const info = await res.json();
+                        
+                        if (info.service === 'GROQ') {
+                            const modelsRes = await fetch('/api/groq-models');
+                            const { models } = await modelsRes.json();
+                            
+                            let modelList = '<b>Available models:</b><ul>';
+                            models.forEach(model => {
+                                modelList += `<li>${model.id}. ${model.name}</li>`;
+                            });
+                            modelList += '</ul><br>Please enter the number of the model you want to use:';
+                            
+                            addMessage(modelList, false, true);
+                            
+                            // Add event listener for model selection
+                            const modelInput = document.createElement('input');
+                            modelInput.type = 'text';
+                            modelInput.placeholder = 'Enter model number...';
+                            modelInput.style.marginTop = '10px';
+                            
+                            const sendButton = document.createElement('button');
+                            sendButton.textContent = 'Select Model';
+                            sendButton.style.marginLeft = '10px';
+                            
+                            const inputContainer = document.querySelector('.input-container');
+                            inputContainer.appendChild(modelInput);
+                            inputContainer.appendChild(sendButton);
+                            
+                            sendButton.onclick = async () => {
+                                const modelNumber = parseInt(modelInput.value);
+                                if (modelNumber && modelNumber > 0 && modelNumber <= models.length) {
+                                    const selectedModel = models[modelNumber - 1].name;
+                                    
+                                    // Change the model
+                                    await fetch('/api/change-model', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ model: selectedModel })
+                                    });
+                                    
+                                    // Remove the model selection UI
+                                    inputContainer.removeChild(modelInput);
+                                    inputContainer.removeChild(sendButton);
+                                    
+                                    // Display welcome message with new model
+                                    const welcomeText = `Hi! I'm Agent LES. You're using **GROQ** with **${selectedModel.trim()}**`;
+                                    const formatRes = await fetch('/api/format', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ text: welcomeText })
+                                    });
+                                    const formatData = await formatRes.json();
+                                    addMessage(formatData.html, false, true);
+                                } else {
+                                    addMessage('Invalid model number. Please try again.', false);
+                                }
+                            };
+                            
+                            return;
+                        } else {
+                            addMessage('Model changing is only available for GROQ service.', false);
+                        }
+                    } catch (err) {
+                        addMessage('Error checking service or models.', false);
+                    }
+                }
+                
+                // Regular message handling
                 try {
                     const response = await fetch('/api/ask', {
                         method: 'POST',
@@ -129,7 +200,6 @@
                     });
                     const data = await response.json();
                     if (data.reply) {
-                        // Call formatter endpoint
                         const formatRes = await fetch('/api/format', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },

@@ -6,6 +6,7 @@ const cors = require('cors');
 const askLLM = require('./services/llmService');
 const config = require('./config');
 const formatPromptOutput = require('./services/promptFormatter');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
@@ -44,7 +45,7 @@ app.post('/api/ask', async (req, res) => {
 app.get('/api/info', (req, res) => {
   res.json({
     service: config.llmService,
-    model: config.model || 'default',
+    model: process.env.MODEL ? process.env.MODEL.trim() : 'default',
   });
 });
 
@@ -55,5 +56,27 @@ app.post('/api/format', (req, res) => {
   }
   const html = formatPromptOutput(text);
   res.json({ html });
+});
+
+app.get('/api/groq-models', (req, res) => {
+  try {
+    const models = fs.readFileSync(path.join(__dirname, 'services/groq_llms.txt'), 'utf8')
+      .split('\n')
+      .filter(model => model.trim())
+      .map((model, index) => ({ id: index + 1, name: model }));
+    res.json({ models });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to read GROQ models' });
+  }
+});
+
+app.post('/api/change-model', (req, res) => {
+  const { model } = req.body;
+  if (!model) {
+    return res.status(400).json({ error: 'Model name is required' });
+  }
+  process.env.MODEL = model;
+  res.json({ success: true, model });
 });
 

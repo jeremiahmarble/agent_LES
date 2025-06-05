@@ -37,7 +37,7 @@ const LLM_SERVICES = {
 async function askLLM(prompt) {
   const service = process.env.LLM_SERVICE?.toUpperCase() || 'GROQ';
   const apiKey = process.env.LLM_SERVICE_KEY;
-  const model = process.env.MODEL || LLM_SERVICES[service].defaultModel;
+  const model = process.env.MODEL ? process.env.MODEL.trim() : LLM_SERVICES[service].defaultModel;
 
   if (!LLM_SERVICES[service]) {
     throw new Error(`Unsupported LLM service: ${service}`);
