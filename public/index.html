@@ -95,7 +95,7 @@
             try {
                 const res = await fetch('/api/info');
                 const info = await res.json();
-                const promptText = `Hi! I'm Agent LES.\nYou're using **${info.service}** with **${info.model}**.\nTo switch model, type the word CHANGE`;
+                const promptText = `Hi! I'm Agent LES.\nYou're using **${info.service}** with **${info.model}**.\nrsTo switch model, type the word CHANGE`;
 
                 // Pass welcome message through the formatter endpoint
                 const formatRes = await fetch('/api/format', {
