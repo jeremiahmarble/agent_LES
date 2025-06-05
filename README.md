@@ -76,4 +76,3 @@ If something breaks:
 * Restart the server: `Ctrl+C` and then `npm start` again
 
 <3 Jeremiah & Dona
-=======>>>>>>> 9df7eb47f84ddd14939743dd1bfe10c85ca1f9a5
