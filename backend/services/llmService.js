@@ -10,6 +10,12 @@ const LLM_SERVICES = {
     headerValue: (key) => `Bearer ${key}`,
     defaultModel: 'llama-3.3-70b-versatile'
   },
+  AZURE: {
+    baseUrl: (endpoint, apiVersion) => `${endpoint}/openai/deployments/${process.env.MODEL || 'gpt-4o'}/chat/completions?api-version=${apiVersion}`,
+    headerKey: 'api-key',
+    headerValue: (key) => key,
+    defaultModel: 'gpt-4o'
+  },
   OPENAI: {
     baseUrl: 'https://api.openai.com/v1/chat/completions',
     headerKey: 'Authorization',
@@ -50,13 +56,34 @@ async function askLLM(prompt) {
 
   const serviceConfig = LLM_SERVICES[service];
 
+  // Handle Azure's different URL structure
+  let requestUrl;
+  let requestBody;
+  
+  if (service === 'AZURE') {
+    const endpoint = process.env.AZURE_ENDPOINT;
+    const apiVersion = process.env.AZURE_API_VERSION || '2024-02-15-preview';
+    
+    if (!endpoint) {
+      throw new Error('AZURE_ENDPOINT is required for Azure service');
+    }
+    
+    requestUrl = serviceConfig.baseUrl(endpoint, apiVersion);
+    requestBody = {
+      messages: formatPromptContext(prompt)
+    };
+  } else {
+    requestUrl = serviceConfig.baseUrl;
+    requestBody = {
+      model: model,
+      messages: formatPromptContext(prompt)
+    };
+  }
+
   try {
     const response = await axios.post(
-      serviceConfig.baseUrl,
-      {
-        model: model,
-        messages: formatPromptContext(prompt)
-      },
+      requestUrl,
+      requestBody,
       {
         headers: {
           [serviceConfig.headerKey]: serviceConfig.headerValue(apiKey),
@@ -69,6 +96,7 @@ async function askLLM(prompt) {
     switch (service) {
       case 'GROQ':
       case 'OPENAI':
+      case 'AZURE':
         return response.data.choices[0].message.content;
       case 'CLAUDE':
         return response.data.content[0].text;

@@ -24,14 +24,18 @@ console.log('Environment variables:', {
   llmService: process.env.LLM_SERVICE,
   hasServiceKey: !!process.env.LLM_SERVICE_KEY,
   model: process.env.MODEL,
-  port: process.env.PORT
+  port: process.env.PORT,
+  azureEndpoint: process.env.AZURE_ENDPOINT,
+  azureApiVersion: process.env.AZURE_API_VERSION
 });
 
 const config = {
   llmService: process.env.LLM_SERVICE?.toUpperCase() || 'GROQ',
   llmServiceKey: process.env.LLM_SERVICE_KEY,
   model: process.env.MODEL,
-  port: process.env.PORT || 3000
+  port: process.env.PORT || 3000,
+  azureEndpoint: process.env.AZURE_ENDPOINT,
+  azureApiVersion: process.env.AZURE_API_VERSION || '2024-02-15-preview'
 };
 
 // Validate configuration
@@ -42,6 +46,12 @@ if (!config.llmServiceKey) {
 
 if (!config.llmService) {
   console.error('❌ LLM_SERVICE is not set in environment variables');
+  process.exit(1);
+}
+
+// Azure-specific validation
+if (config.llmService === 'AZURE' && !config.azureEndpoint) {
+  console.error('❌ AZURE_ENDPOINT is required when using Azure service');
   process.exit(1);
 }
 

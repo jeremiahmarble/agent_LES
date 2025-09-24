@@ -47,9 +47,55 @@ The server will run on localhost:8000 — GitHub will provide a preview link.
 ## 🔍 How It Works
 
 * **Frontend** sends user prompt to `/api/ask`
-* **Backend** sends prompt to LLM via Groq or mock LLM function
+* **Backend** sends prompt to LLM via Groq, Azure AI Foundry, or other LLM providers
 * **Middleware** logs, modifies, or filters requests/responses
 * Response is shown in the UI
+
+## 🔄 LLM Provider Switching
+
+Agent LES supports multiple LLM providers and can be easily switched using environment variables:
+
+### Supported Providers
+- **Groq** (default) - Fast inference with various models
+- **Azure AI Foundry** - Microsoft's enterprise AI platform
+- **OpenAI** - Standard OpenAI API
+- **Claude** - Anthropic's Claude models
+- **Gemini** - Google's Gemini models
+
+### Configuration
+
+Create a `.env` file in the project root:
+
+```env
+# For Groq (default)
+LLM_SERVICE=GROQ
+LLM_SERVICE_KEY=your_groq_api_key
+MODEL=llama-3.3-70b-versatile
+
+# For Azure AI Foundry
+LLM_SERVICE=AZURE
+LLM_SERVICE_KEY=your_azure_api_key
+AZURE_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_API_VERSION=2024-02-15-preview
+MODEL=gpt-4o
+
+# Server settings
+PORT=8000
+HOST=localhost
+```
+
+### Switching Providers
+
+1. **Update your `.env` file** with the desired provider configuration
+2. **Restart the server**: `Ctrl+C` then `npm start`
+3. **Test the connection** by sending a message in the chat interface
+
+### Model Switching (Runtime)
+
+Type `CHANGE` in the chat interface to switch models within the current provider:
+- **Groq**: Lists available Groq models
+- **Azure**: Lists common Azure OpenAI models
+- **Other providers**: Model switching not yet implemented
 
 ---
 

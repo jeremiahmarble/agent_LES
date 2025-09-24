@@ -71,6 +71,24 @@ app.get('/api/groq-models', (req, res) => {
   }
 });
 
+app.get('/api/azure-models', (req, res) => {
+  try {
+    // Common Azure OpenAI models
+    const models = [
+      'gpt-4o',
+      'gpt-4o-mini',
+      'gpt-4-turbo',
+      'gpt-4',
+      'gpt-35-turbo',
+      'gpt-35-turbo-16k'
+    ].map((model, index) => ({ id: index + 1, name: model }));
+    res.json({ models });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to read Azure models' });
+  }
+});
+
 app.post('/api/change-model', (req, res) => {
   const { model } = req.body;
   if (!model) {
