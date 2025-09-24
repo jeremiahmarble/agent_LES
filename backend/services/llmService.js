@@ -1,10 +1,6 @@
 const axios = require('axios');
 const config = require('../config');
-const fs = require('fs');
-const path = require('path');
-
-// Load system prompt
-const systemPrompt = fs.readFileSync(path.join(__dirname, '../../prompts/system_prompt.txt'), 'utf8').trim();
+const { formatPromptContext, validatePrompt } = require('./promptService');
 
 // LLM Service endpoints and configurations
 const LLM_SERVICES = {
@@ -35,6 +31,11 @@ const LLM_SERVICES = {
 };
 
 async function askLLM(prompt) {
+  // Validate the prompt first
+  if (!validatePrompt(prompt)) {
+    throw new Error('Invalid prompt');
+  }
+
   const service = process.env.LLM_SERVICE?.toUpperCase() || 'GROQ';
   const apiKey = process.env.LLM_SERVICE_KEY;
   const model = process.env.MODEL ? process.env.MODEL.trim() : LLM_SERVICES[service].defaultModel;
@@ -54,10 +55,7 @@ async function askLLM(prompt) {
       serviceConfig.baseUrl,
       {
         model: model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
+        messages: formatPromptContext(prompt)
       },
       {
         headers: {

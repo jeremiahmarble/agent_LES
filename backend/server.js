@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 8000;
-const HOST = '0.0.0.0';
+const HOST = process.env.HOST || 'localhost';
 
 // Debug logging
 console.log('Server starting...');
